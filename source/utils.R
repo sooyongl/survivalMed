@@ -11,30 +11,6 @@ library(lavaan)
 fread <- data.table::fread
 fwrite <- data.table::fwrite
 select <- dplyr::select
-# install.packages('RMediation')
-library(RMediation)
-
-dist_prod <- function(a, a.se, b, b.se) {
-
-  # a = -0.103
-  # b = -0.078
-  # a.se = 0.046
-  # b.se = 0.029
-  ci <- RMediation::medci(a, b, a.se, b.se, type = "prodclin", alpha = 0.05)
-  # ub<- RMediation::qprodnormal(p = 0.975, a, b, a.se, b.se, type = "all")
-  # lb <- RMediation::qprodnormal(p = 0.025, a, b, a.se, b.se, type = "all")
-  
-  # medieff <- a * b
-  # medieff.se <- sqrt(a*b.se + b*a.se)
- 
-  
-  ci
-  # c(medieff + ub*medieff.se, medieff + lb*medieff.se)
-  
-  
-  
-}
-
 
 
 get_threshold <- function(ep, prop_events, tp) {
