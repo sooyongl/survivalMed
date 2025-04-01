@@ -20,7 +20,9 @@ o <- foreach(i = 1:nrow(condition),
                sample_size <- condition$sample_size[i]
                event_proportions <- condition$event_proportions[i]
                total_prop_events <- condition$total_prop_events[i]
-               eff_size <- condition$eff_size[i]
+               
+               
+               eff_size <- condition$eff_size[i] # b-path
                tp <- condition$timepoints[i]
                nrep <- condition$nrep[i]
                
@@ -29,9 +31,9 @@ o <- foreach(i = 1:nrow(condition),
                  prop_events = total_prop_events,
                  tp = tp)
                
-               beta1 = rep(0.5, tp)
-               ome1  = -0.5
-               gam1  = rep(eff_size, tp)
+               beta1 = rep(0.5, tp) # a-path
+               ome1  = -0.5       # c-path
+               gam1  = rep(eff_size, tp) # b-path
                X1    = rnorm(sample_size)
                
                data <- gen_DTSA(thresholds = thres, beta = beta1, 

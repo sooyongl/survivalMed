@@ -5,8 +5,7 @@ library(rblimp)
 library(glue)
 library(MplusAutomation)
 library(tidyverse)
-library(lavaan)
-# library(data.table)
+library(data.table)
 
 fread <- data.table::fread
 fwrite <- data.table::fwrite
@@ -57,6 +56,10 @@ get_threshold <- function(ep, prop_events, tp) {
 }
 
 gen_DTSA <- function(thresholds, beta, gamma = rep(0.4, 5), omega = -0.2, X1) {
+  
+  # beta = a-path
+  # gamma = b-path
+  # omega = c-path'
   
   N = length(X1)
   tp <- length(thresholds)

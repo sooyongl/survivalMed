@@ -1,7 +1,7 @@
 for(i in fs::dir_ls("source", regexp = "(r|R)$")) { source(i) }
 
 files <- fs::dir_ls("data", regexp = "dat$")
-files <- files[str_detect(files, "_list",negate = T)]
+
 
 cores <- parallel::detectCores() - 2
 cl <- parallel::makeCluster(cores)
