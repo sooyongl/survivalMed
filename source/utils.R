@@ -55,12 +55,12 @@ get_threshold <- function(ep, prop_events, tp) {
   # -round(logits,3)
 }
 
-gen_DTSA <- function(thresholds, beta, gamma = rep(0.4, 5), omega = -0.2, X1) {
+gen_DTSA <- function(thresholds, beta, gamma = rep(0.4, 5), omega = -0.2, X1, int.ome = NULL, latent = T) {
   
   # beta = a-path
   # gamma = b-path
   # omega = c-path'
-  
+  # int.ome = int.omega
   N = length(X1)
   tp <- length(thresholds)
   
@@ -76,11 +76,24 @@ gen_DTSA <- function(thresholds, beta, gamma = rep(0.4, 5), omega = -0.2, X1) {
   }
   
   # Gen distal outcome
-  ## Use observed binary mediator
-  # Y <- U %*% gamma + omega*X1 + rnorm(N, 0, 1)
   
-  ## Use Latent propensity mediator
-  Y <- u_star %*% gamma + omega*X1 + rnorm(N, 0, 1)
+  if(latent) {
+    ## Use Latent propensity mediator
+    Y <- u_star %*% gamma + omega*X1 + rnorm(N, 0, 1)
+  } else {
+    ## Use observed binary mediator
+    Y <- U %*% gamma + omega*X1 + rnorm(N, 0, 1)
+  }
+  
+  if(!is.null(int.ome)) {
+    
+    if(latent) {
+      Y <- Y + (u_star * X1) %*% int.ome
+    } else {
+      Y <- Y + (U * X1) %*% int.ome
+    }
+    
+  }
   
   if(F) {
     summary(lm(Y ~  X1.1+X2+X3+X4+X5 + X1, data = data.frame(Y, u_star, X1)))
