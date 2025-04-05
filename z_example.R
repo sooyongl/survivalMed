@@ -1,5 +1,7 @@
 for(i in fs::dir_ls("source", regexp = "(r|R)$")) { source(i) }
 
+# https://www.appliedmissingdata.com/blimp
+
 library(rblimp)
 library(tidyverse)
 
@@ -47,4 +49,4 @@ chain = "2 processors 1;",
 seed = 1234)
 
 
-bfit_
+bfit_@syntax

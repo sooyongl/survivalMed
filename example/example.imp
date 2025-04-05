@@ -1,0 +1,30 @@
+DATA: example.dat;
+VARIABLES: v1 v2 v3 v4 v5 x z class;
+BURN: 5000;
+SEED: 1234;
+ITER: 5000;
+MISSING: -99;
+ORDINAL: v1 v2 v3 v4 v5;
+MODEL:  
+
+v1 ~ 1 x@a1_1;
+v2 ~ 1 x@a1_2;
+v3 ~ 1 x@a1_3;
+v4 ~ 1 x@a1_4;
+v5 ~ 1 x@a1_5;
+
+z ~ v1.latent@eh1;
+z ~ v2.latent@eh2;
+z ~ v3.latent@eh3;
+z ~ v4.latent@eh4;
+z ~ v5.latent@eh5;
+
+z ~ x ;;
+PARAMETERS: int_1 = a1_1 * eh1;;
+    int_2 = a1_2 * eh2;;
+    int_3 = a1_3 * eh3;;
+    int_4 = a1_4 * eh4;;
+    int_5 = a1_5 * eh5;;
+
+CHAINS: 2 processors 1;;
+OPTIONS: savepred savelatent saveresid;
