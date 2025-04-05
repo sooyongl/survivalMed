@@ -64,7 +64,7 @@ int.omega = rep(.2, 5)
 
 data <- gen_DTSA(thresholds = thres, beta = beta1, 
                  gamma = gam1, omega = ome1, X1,
-                 int.ome = NULL, 
+                 int.ome = int.omega, 
                  latent = T)
 names(data) <- c("v1","v2","v3","v4","v5","x","z")
 
@@ -103,3 +103,34 @@ seed = 1232124)
 
 bfit_
 bfit_@syntax
+
+bfit_0 <- rblimp::rblimp(
+  model = (
+    glue::glue("
+
+
+v1 ~ 1 x@a1_1;
+v2 ~ 1 x@a1_2;
+v3 ~ 1 x@a1_3;
+v4 ~ 1 x@a1_4;
+v5 ~ 1 x@a1_5;
+
+z ~ v1@eh1;
+z ~ v2@eh2;
+z ~ v3@eh3;
+z ~ v4@eh4;
+z ~ v5@eh5;
+
+z ~ x  v1*x v2*x v3*x v4*x v5*x;
+")
+  ),
+
+# parameters = c("int_1 = a1_1 * eh1;", "int_2 = a1_2 * eh2;", "int_3 = a1_3 * eh3;", "int_4 = a1_4 * eh4;", "int_5 = a1_5 * eh5;"),
+data = data,
+ordinal = c("v1","v2","v3","v4","v5"),
+iter = 20000,
+burn = 20000,
+chain = "2",# processors 1;",
+seed = 1232124)
+
+bfit_0
