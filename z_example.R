@@ -18,7 +18,7 @@ X1    = rnorm(10000)
 
 args(gen_DTSA)
 data <- gen_DTSA(thresholds = thres, beta = beta1, 
-                 gamma = gam1, omega = ome1, X1)
+                 gamma = gam1, omega = ome1, X1,latent = F)
 names(data) <- c("v1","v2","v3","v4","v5","x","z")
 
 data <- data %>% 
@@ -65,7 +65,7 @@ int.omega = rep(.2, 5)
 data <- gen_DTSA(thresholds = thres, beta = beta1, 
                  gamma = gam1, omega = ome1, X1,
                  int.ome = int.omega, 
-                 latent = T)
+                 latent = F)
 names(data) <- c("v1","v2","v3","v4","v5","x","z")
 
 data <- data %>% 
@@ -134,3 +134,58 @@ chain = "2",# processors 1;",
 seed = 1232124)
 
 bfit_0
+
+
+
+# -------------------------------------------------------------------------
+
+int.omega = rep(.2, 5)
+
+data <- gen_DTSA(thresholds = thres, beta = beta1, 
+                 gamma = gam1, omega = ome1, X1,
+                 int.ome = int.omega, 
+                 latent = T)
+names(data) <- c("v1","v2","v3","v4","v5","x","z")
+
+bfit_99 <- rblimp::rblimp(
+  model = (
+    glue::glue("
+
+
+v1 ~ 1 x@a1_1;
+
+z ~ v1.latent@eh1;
+
+z ~ x  v1.latent*x ;
+")
+  ),
+
+# parameters = c("int_1 = a1_1 * eh1;", "int_2 = a1_2 * eh2;", "int_3 = a1_3 * eh3;", "int_4 = a1_4 * eh4;", "int_5 = a1_5 * eh5;"),
+data = data,
+ordinal = c("v1"),
+iter = 10000,
+burn = 10000,
+chain = "2",# processors 1;",
+seed = 1232124)
+
+
+bfit_98 <- rblimp::rblimp(
+  model = (
+    glue::glue("
+
+
+v1 ~ 1 x@a1_1;
+
+z ~ v1@eh1;
+
+z ~ x  v1*x ;
+")
+  ),
+
+# parameters = c("int_1 = a1_1 * eh1;", "int_2 = a1_2 * eh2;", "int_3 = a1_3 * eh3;", "int_4 = a1_4 * eh4;", "int_5 = a1_5 * eh5;"),
+data = data,
+ordinal = c("v1"),
+iter = 10000,
+burn = 10000,
+chain = "2",# processors 1;",
+seed = 1232124)
